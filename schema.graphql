@@ -1,0 +1,133 @@
+"""
+GraphQL schema for literature backend application
+"""
+
+# Common types
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+}
+
+interface Node {
+    id: ID!
+}
+
+# Account domain
+type Account implements Node {
+    id: ID!
+    email: String!
+    username: String!
+}
+
+input SignUpInput {
+    username: String!
+    email: String!
+    password: String!
+}
+
+# Novel domain
+enum Genre {
+    GENERAL
+    ROMANCE_DRAMA
+    COMIC
+    ESSAY
+    FANTASY
+    FUSION
+    ACTION_MARTIAL_ARTS
+    SPORTS_SCHOOL
+    HORROR_MYSTERY
+}
+
+type NovelKeyword implements Node {
+    id: ID!
+    name: String!
+}
+
+type Novel implements Node {
+    id: ID!
+    title: String!
+    description: String!
+    synopsis: String
+    coverImageUrl: String
+    genre: Genre!
+    tags: [NovelKeyword!]!
+    createdAt: String!
+    updatedAt: String!
+}
+
+# Contributor group domain
+enum ContributorGroupStatus {
+    PREPARING,
+    ACTIVE,
+    COMPLETED,
+    DELETED
+}
+
+type ContributorGroup implements Node {
+    id: ID!
+    contributorCount: Int!
+    maxContributorCount: Int!
+    status: ContributorGroupStatus!
+    completedAt: String
+    novel: Novel!
+}
+
+enum ContributorRole {
+    MAIN
+    COLLABORATOR
+}
+
+type Contributor implements Node {
+    id: ID!
+    role: ContributorRole!
+    priority: Int!
+    isCurrentWriter: Boolean!
+    createdAt: String!
+    updatedAt: String!
+}
+
+# Queries
+type Query {
+    # Account queries
+    me: Account
+
+    # Novel queries
+    novel(id: ID!): Novel
+
+    # Contributor group queries
+    contributors(groupId: ID!): [Contributor!]!
+}
+
+# Search
+union SearchResult = Novel | ContributorGroup |  Contributor
+
+type SearchConnection {
+    edges: [SearchEdge!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type SearchEdge {
+    node: SearchResult!
+    cursor: String!
+}
+
+# Mutations
+type Mutation {
+    # Account mutations
+    signUp(input: SignUpInput!): AuthPayload!
+    signIn(username: String!, password: String!): AuthPayload!
+    resetPassword(email: String!): Boolean!
+
+    # Novel mutations
+
+    # Contributor group mutations
+}
+
+# Auth
+type AuthPayload {
+    token: String!
+    account: Account!
+}
