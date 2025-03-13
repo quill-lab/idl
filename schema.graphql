@@ -2,6 +2,9 @@
 GraphQL schema for literature backend application
 """
 
+# Custom scalar types
+scalar DateTime
+
 # Common types
 type PageInfo {
     offset: Int!
@@ -31,9 +34,9 @@ type Chapter implements Node {
     id: ID!
     episode: Int!
     title: String!
-    editedAt: String!
+    editedAt: DateTime!
     status: ChapterStatus!
-    approvedAt: String!
+    approvedAt: DateTime
     metadata: ChapterMetadata!
 }
 
