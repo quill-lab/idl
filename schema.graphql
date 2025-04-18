@@ -33,7 +33,7 @@ type ChapterMetadata {
 type Chapter implements Node {
     id: ID!
     episode: Int!
-    title: String!
+    title: String
     editedAt: DateTime!
     status: ChapterStatus!
     approvedAt: DateTime
