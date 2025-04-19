@@ -1,11 +1,5 @@
-"""
-GraphQL schema for literature backend application
-"""
-
-# Custom scalar types
 scalar DateTime
 
-# Common types
 type PageInfo {
     offset: Int!
     limit: Int!
@@ -13,6 +7,11 @@ type PageInfo {
 
 interface Node {
     id: ID!
+}
+
+type Author implements Node {
+    id: ID!
+    name: String!
 }
 
 enum ChapterStatus {
@@ -38,6 +37,7 @@ type Chapter implements Node {
     status: ChapterStatus!
     approvedAt: DateTime
     metadata: ChapterMetadata!
+    currentAuthor: Author
 }
 
 type ChapterEdge {
@@ -52,7 +52,6 @@ type ChapterConnection {
     totalCount: Int!
 }
 
-# Queries
 type Query {
     chaptersConnection(contributorGroupId: ID!, offset: Int = 0, limit: Int = 20): ChapterConnection!
 }
