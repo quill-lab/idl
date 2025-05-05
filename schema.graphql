@@ -54,4 +54,5 @@ type ChapterConnection {
 
 type Query {
     chaptersConnection(contributorGroupId: ID!, offset: Int = 0, limit: Int = 20): ChapterConnection!
+    chapter(id: ID!): Chapter
 }
