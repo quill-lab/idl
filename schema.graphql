@@ -12,6 +12,7 @@ interface Node {
 type Author implements Node {
     id: ID!
     name: String
+    accountId: ID!
 }
 
 enum ChapterStatus {
